@@ -14,7 +14,7 @@ console.log("Эксперимент 2. Тело стрелочной функц�
 {
   // Здесь намеренно пропущен return. Исправление входит в задание 1.
   const square = (value) => {
-    value * value;
+    return value * value;
   };
   console.log(square(4));
 }

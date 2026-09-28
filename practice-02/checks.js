@@ -347,6 +347,37 @@ check("35. Работа с другим набором, без зависимо�
   assert.deepEqual(tasks, before);
 });
 
+check("Собственная проверка 1. Добавление задачи после удаления", () => {
+  const tasks = fixture();
+  const afterRemove = expectTasks(removeTask(tasks, 7));
+  const restored = expectTasks(addTask(afterRemove, 7, "Вернуть задачу в список", "low"));
+  assert.deepEqual(restored.map((task) => task.id), [1, 4, 10, 7]);
+  assert.equal(restored[3].title, "Вернуть задачу в список");
+  assert.equal(restored[3].priority, "low");
+  assert.equal(restored[3].completed, false);
+  assert.deepEqual(tasks, fixture());
+});
+check("Собственная проверка 2. Изменение первой и последней записей набора", () => {
+  const tasks = [
+    { id: 5, title: "Первая запись", completed: false, priority: "low" },
+    { id: 9, title: "Последняя запись", completed: false, priority: "high" },
+  ];
+  const before = copyTasks(tasks);
+  const done = expectTasks(setTaskCompleted(tasks, 5, true));
+  const renamed = expectTasks(renameTask(done, 9, "Обновлённая последняя запись"));
+  assert.equal(renamed[0].completed, true);
+  assert.equal(renamed[renamed.length - 1].title, "Обновлённая последняя запись");
+  assert.deepEqual(renamed.map((task) => task.id), [5, 9]);
+  assert.deepEqual(tasks, before);
+});
+check("Собственная проверка 3. Цепочка операций и итоговая сводка", () => {
+  let current = fixture();
+  current = expectTasks(addTask(current, 80, "Проверить расширение", "medium"));
+  current = expectTasks(setTaskCompleted(current, 7, true));
+  current = expectTasks(setTaskCompleted(current, 4, true));
+  assert.deepEqual(getTaskStats(current), { total: 5, completed: 4, pending: 1, progress: 80 });
+  assert.deepEqual(current.map((task) => task.id), [1, 4, 7, 10, 80]);
+});
 // Три собственных проверки можно добавить здесь, до итогового вывода,
 // либо выполнить отдельно и описать в отчёте. Общие проверки удалять не нужно.
 // Пример формы записи (не готовая проверка задания):
