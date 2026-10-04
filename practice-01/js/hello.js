@@ -1,5 +1,7 @@
-const studentName = "{{Иван}}";
-const groupName = "{{Эфбо-13-25}}";
+"use strict";
+
+const studentName = "Иван";
+const groupName = "Эфбо-13-25";
 const practiceNumber = 1;
 
 console.log(`Студент: ${studentName}`);

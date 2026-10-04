@@ -1,7 +1,7 @@
 "use strict";
 
-const totalTasks = 14;
-const completedTasks = 4;
+const totalTasks = 5;
+const completedTasks = 6;
 
 if (typeof totalTasks !== "number" || typeof completedTasks !== "number") {
   console.log("Ошибка: вместо числа передано не числовое значение");

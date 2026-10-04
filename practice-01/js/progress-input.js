@@ -1,5 +1,5 @@
 "use strict";
-
+//Лучинин Иван эфбо-13-25
 const totalTasksInput = "14";
 const completedTasksInput = "4";
 
