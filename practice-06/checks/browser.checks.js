@@ -61,7 +61,12 @@ function requireNode(root, selector) {
 async function waitFor(condition, message, timeout = 5000) {
   const started = performance.now();
   while (performance.now() - started < timeout) {
-    const value = condition();
+    let value;
+    try {
+      value = condition();
+    } catch {
+      value = false;
+    }
     if (value) return value;
     await new Promise((resolve) => setTimeout(resolve, 25));
   }
