@@ -1,5 +1,6 @@
 // Указать номер из предыдущих работ. Номер свыше 8 приводится к диапазону 1–8.
-export const variant = 1;
+// Указать номер из предыдущих работ. Номер свыше 8 приводится к диапазону 1–8.
+export const variant = 8;
 export function createInitialFilters() {
   const presets = [
     { completed: 'false' }, { completed: 'true' },
@@ -9,3 +10,4 @@ export function createInitialFilters() {
   ];
   return { q: '', completed: '', priority: '', categoryId: '', ...presets[((variant - 1) % 8 + 8) % 8] };
 }
+
