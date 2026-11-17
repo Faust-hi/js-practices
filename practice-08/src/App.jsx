@@ -13,6 +13,7 @@ export default function App() {
   const [notice, setNotice] = useState('');
   const data = useTaskData({ api, filters });
   const { tasks, categories, meta } = data.snapshot;
+  console.log(data.status, data.snapshot.tasks.length);
   const disabled = data.pending || data.status !== 'ready';
   async function save(value) {
     setNotice('');
@@ -59,3 +60,5 @@ export default function App() {
     </section>
   </main>;
 }
+
+

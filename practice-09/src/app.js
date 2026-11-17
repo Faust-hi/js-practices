@@ -5,6 +5,8 @@ import { ApiError, errorHandler } from './errors.js';
 
 export function createApp({ store = createStore() } = {}) {
   const app = express();
+  app.use(express.json());
+
   app.disable('x-powered-by');
   app.disable('etag');
   app.set('case sensitive routing', true);

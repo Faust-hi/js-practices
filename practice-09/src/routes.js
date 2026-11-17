@@ -7,6 +7,18 @@ export function createRouter(store) {
 
   router.get('/health', (req, res) => res.json({ data: { status: 'ok' } }));
 
+  router.get('/demo-invalid', (req, res) => {
+  res.type('html').send(
+    '<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>Проверка валидации</title></head>' +
+    '<body><h1>POST /api/tasks — невалидный title</h1><pre id="out">Отправка запроса…</pre>' +
+    '<script>' +
+    "fetch('/api/tasks', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({title:'   '})})" +
+    ".then(async r => { document.getElementById('out').textContent = r.status + ' ' + r.statusText + '\\n' + JSON.stringify(await r.json(), null, 2); })" +
+    '</script></body></html>'
+  );
+});
+
+
   router.get('/categories', (req, res) => {
     const data = store.listCategories();
     res.json({ data, meta: { total: data.length } });
@@ -25,6 +37,13 @@ export function createRouter(store) {
     const data = store.getTask(id);
     if (!data) throw new ApiError(404, 'TASK_NOT_FOUND', 'Задача не найдена.', { id });
     res.json({ data });
+  });
+  router.post('/tasks', (req, res) => {
+    const parsed = req.body || {};
+    const title = typeof parsed.title === 'string' ? parsed.title.trim() : '';
+    if (title.length < 1 || title.length > 100) throw new ApiError(400, 'VALIDATION_ERROR', 'Название должно содержать от 1 до 100 символов.');
+    const created = store.createTask({ title, priority: parsed.priority, categoryId: parsed.categoryId });
+    res.status(201).json({ data: created });
   });
 
   // Изменяющие методы на известных путях запрещены: 405 и Allow.
